@@ -1,13 +1,16 @@
 const path = require('path');
 const fs = require('fs');
 const logger = require('./logger');
+
 const NAUKRI_LOGIN_URL = 'https://www.naukri.com/nlogin/login';
 const NAUKRI_PROFILE_URL = 'https://www.naukri.com/mnjuser/profile';
+
 // Ensure screenshots directory exists
 const screenshotsDir = path.join(__dirname, '..', 'screenshots');
 if (!fs.existsSync(screenshotsDir)) {
   fs.mkdirSync(screenshotsDir, { recursive: true });
 }
+
 /**
  * Take a debug screenshot
  */
@@ -21,6 +24,7 @@ async function takeScreenshot(page, name) {
     logger.warn(`Failed to save screenshot: ${err.message}`);
   }
 }
+
 /**
  * Wait and retry helper
  */
@@ -35,15 +39,25 @@ async function retryAction(action, retries = 3, delayMs = 2000) {
     }
   }
 }
+
 /**
  * Login to Naukri.com
  */
 async function login(page, email, password) {
   logger.info('Navigating to Naukri login page...');
   await page.goto(NAUKRI_LOGIN_URL, { waitUntil: 'networkidle', timeout: 60000 });
+
   // Wait for the login form to fully render (important for headless/CI environments)
   logger.info('Waiting for login form to render...');
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(8000);
+
+  // Debug: log page state to help diagnose CI issues
+  const pageUrl = page.url();
+  const pageTitle = await page.title();
+  logger.info(`Page URL: ${pageUrl}`);
+  logger.info(`Page title: ${pageTitle}`);
+  await takeScreenshot(page, 'debug-login-page');
+
   // Close any popups/overlays that might appear
   try {
     const closeButtons = page.locator('[class*="close"], [class*="Close"], [aria-label="Close"]');
@@ -59,8 +73,10 @@ async function login(page, email, password) {
   } catch {
     // No popups to close
   }
+
   // Fill in credentials
   logger.info('Entering credentials...');
+
   // Try multiple selectors for email field
   const emailSelectors = [
     'input[placeholder*="Enter your active Email"]',
@@ -73,6 +89,7 @@ async function login(page, email, password) {
     'form input[type="text"]',
     'input[type="text"]',
   ];
+
   let emailFilled = false;
   for (const selector of emailSelectors) {
     try {
@@ -89,10 +106,12 @@ async function login(page, email, password) {
       continue;
     }
   }
+
   if (!emailFilled) {
     await takeScreenshot(page, 'login-email-fail');
     throw new Error('Could not find email input field');
   }
+
   // Try multiple selectors for password field
   const passwordSelectors = [
     'input[placeholder*="Password"]',
@@ -100,6 +119,7 @@ async function login(page, email, password) {
     'input[type="password"]',
     '#passwordField',
   ];
+
   let passwordFilled = false;
   for (const selector of passwordSelectors) {
     try {
@@ -114,10 +134,12 @@ async function login(page, email, password) {
       continue;
     }
   }
+
   if (!passwordFilled) {
     await takeScreenshot(page, 'login-password-fail');
     throw new Error('Could not find password input field');
   }
+
   // Click login button
   const loginSelectors = [
     'button[type="submit"]',
@@ -126,6 +148,7 @@ async function login(page, email, password) {
     'input[type="submit"]',
     '[class*="loginButton"]',
   ];
+
   let loginClicked = false;
   for (const selector of loginSelectors) {
     try {
@@ -140,13 +163,16 @@ async function login(page, email, password) {
       continue;
     }
   }
+
   if (!loginClicked) {
     await takeScreenshot(page, 'login-button-fail');
     throw new Error('Could not find login button');
   }
+
   // Wait for navigation after login
   logger.info('Waiting for login to complete...');
   await page.waitForTimeout(5000);
+
   // Check if login succeeded by looking for profile indicators
   const currentUrl = page.url();
   if (currentUrl.includes('nlogin') || currentUrl.includes('login')) {
@@ -164,8 +190,10 @@ async function login(page, email, password) {
     // Give it more time
     await page.waitForTimeout(5000);
   }
+
   logger.info('✅ Login successful!');
 }
+
 /**
  * Open the resume headline editor modal
  */
@@ -178,6 +206,7 @@ async function openHeadlineEditor(page) {
     '.widgetHead [class*="edit"]',
     'span[class*="edit"]:near(:text("Resume Headline"))',
   ];
+
   // Try specific selectors
   for (const selector of headlineEditSelectors) {
     try {
@@ -192,6 +221,7 @@ async function openHeadlineEditor(page) {
       continue;
     }
   }
+
   // Fallback: find "Resume Headline" text and click nearby edit icon
   try {
     const headlineSection = page.locator('text=Resume Headline').first();
@@ -208,6 +238,7 @@ async function openHeadlineEditor(page) {
   } catch {
     // continue
   }
+
   // Fallback: click directly on headline text
   try {
     const headlineText = page.locator('[class*="resumeHeadline"] [class*="text"], [class*="ResumeHeadline"]').first();
@@ -220,9 +251,11 @@ async function openHeadlineEditor(page) {
   } catch {
     // continue
   }
+
   await takeScreenshot(page, 'headline-edit-fail');
   throw new Error('Could not find resume headline edit button');
 }
+
 /**
  * Find and return the headline textarea element
  */
@@ -234,6 +267,7 @@ async function findHeadlineTextarea(page) {
     'textarea',
     'input[class*="headline"]',
   ];
+
   for (const selector of textareaSelectors) {
     try {
       const el = page.locator(selector).first();
@@ -245,9 +279,11 @@ async function findHeadlineTextarea(page) {
       continue;
     }
   }
+
   await takeScreenshot(page, 'headline-textarea-fail');
   throw new Error('Could not find headline textarea');
 }
+
 /**
  * Click the Save button inside the modal dialog
  */
@@ -264,6 +300,7 @@ async function clickSaveInModal(page) {
     '[class*="popup"]',
     '[class*="Popup"]',
   ];
+
   for (const modalSelector of modalSelectors) {
     try {
       const modal = page.locator(modalSelector).first();
@@ -279,6 +316,7 @@ async function clickSaveInModal(page) {
       continue;
     }
   }
+
   // Approach 2: getByRole
   try {
     const saveBtn = page.getByRole('button', { name: 'Save' });
@@ -290,6 +328,7 @@ async function clickSaveInModal(page) {
   } catch {
     // continue
   }
+
   // Approach 3: Exact text filter
   try {
     const saveBtn = page.locator('button').filter({ hasText: /^Save$/ }).first();
@@ -301,6 +340,7 @@ async function clickSaveInModal(page) {
   } catch {
     // continue
   }
+
   // Approach 4: Broad fallback selectors
   const fallbackSelectors = [
     'button:has-text("Save")',
@@ -310,6 +350,7 @@ async function clickSaveInModal(page) {
     'button[class*="save"]',
     'button[class*="Save"]',
   ];
+
   for (const selector of fallbackSelectors) {
     try {
       const el = page.locator(selector).last();
@@ -322,9 +363,11 @@ async function clickSaveInModal(page) {
       continue;
     }
   }
+
   await takeScreenshot(page, 'headline-save-fail');
   throw new Error('Could not find save button for headline');
 }
+
 /**
  * Update resume headline with double-toggle:
  *   1. Add a trailing space → Save
@@ -335,32 +378,41 @@ async function updateResumeHeadline(page) {
   logger.info('Navigating to profile page...');
   await page.goto(NAUKRI_PROFILE_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(5000);
+
   // ── Pass 1: Add a trailing space and save ──
   logger.info('── Pass 1: Adding trailing space ──');
   await openHeadlineEditor(page);
+
   let textarea = await findHeadlineTextarea(page);
   const originalHeadline = await textarea.inputValue();
   logger.info(`Original headline: "${originalHeadline}"`);
+
   const headlineWithSpace = originalHeadline.trimEnd() + ' ';
   await textarea.fill(headlineWithSpace);
   logger.info(`Updated headline (with space): "${headlineWithSpace}"`);
+
   await page.waitForTimeout(2000);
   await clickSaveInModal(page);
   await page.waitForTimeout(4000);
   logger.info('✅ Pass 1 saved (space added)');
+
   // ── Pass 2: Remove the trailing space and save ──
   logger.info('── Pass 2: Removing trailing space ──');
   await openHeadlineEditor(page);
+
   textarea = await findHeadlineTextarea(page);
   const headlineWithoutSpace = originalHeadline.trimEnd();
   await textarea.fill(headlineWithoutSpace);
   logger.info(`Restored headline: "${headlineWithoutSpace}"`);
+
   await page.waitForTimeout(2000);
   await clickSaveInModal(page);
   await page.waitForTimeout(4000);
   logger.info('✅ Pass 2 saved (space removed)');
+
   logger.info('✅ Resume headline double-toggle complete! Headline restored to original.');
 }
+
 /**
  * Upload resume PDF
  */
@@ -369,18 +421,22 @@ async function uploadResume(page, resumePath) {
     logger.info('No resume path configured or file not found. Skipping resume upload.');
     return;
   }
+
   logger.info(`Uploading resume from: ${resumePath}`);
+
   // Navigate to profile if not already there
   if (!page.url().includes('profile')) {
     await page.goto(NAUKRI_PROFILE_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(5000);
   }
+
   // Look for the file upload input
   const uploadSelectors = [
     'input[type="file"]',
     'input[type="file"][id*="resume"]',
     'input[type="file"][name*="resume"]',
   ];
+
   let uploaded = false;
   for (const selector of uploadSelectors) {
     try {
@@ -393,6 +449,7 @@ async function uploadResume(page, resumePath) {
       continue;
     }
   }
+
   if (!uploaded) {
     // Try clicking an "Update Resume" button first
     try {
@@ -400,6 +457,7 @@ async function uploadResume(page, resumePath) {
       if (await updateBtn.isVisible({ timeout: 3000 })) {
         await updateBtn.click();
         await page.waitForTimeout(2000);
+
         const fileInput = page.locator('input[type="file"]').first();
         await fileInput.setInputFiles(resumePath);
         uploaded = true;
@@ -408,12 +466,15 @@ async function uploadResume(page, resumePath) {
       // continue
     }
   }
+
   if (!uploaded) {
     await takeScreenshot(page, 'resume-upload-fail');
     throw new Error('Could not upload resume');
   }
+
   logger.info('✅ Resume uploaded successfully!');
 }
+
 module.exports = {
   login,
   updateResumeHeadline,
