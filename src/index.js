@@ -16,15 +16,15 @@ async function performUpdate() {
   let browser = null;
 
   try {
-    // Launch browser
+    // Launch browser with stealth args to avoid bot detection
     browser = await chromium.launch({
       headless: config.browser.headless,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-features=VizDisplayCompositor',
+        '--disable-blink-features=AutomationControlled',
+        '--window-size=1366,768',
       ],
     });
 
@@ -34,6 +34,26 @@ async function performUpdate() {
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       locale: 'en-IN',
       timezoneId: 'Asia/Kolkata',
+      javaScriptEnabled: true,
+    });
+
+    // Inject stealth scripts to hide automation signals
+    await context.addInitScript(() => {
+      // Hide webdriver flag
+      Object.defineProperty(navigator, 'webdriver', { get: () => false });
+
+      // Override plugins to look real
+      Object.defineProperty(navigator, 'plugins', {
+        get: () => [1, 2, 3, 4, 5],
+      });
+
+      // Override languages
+      Object.defineProperty(navigator, 'languages', {
+        get: () => ['en-US', 'en', 'hi'],
+      });
+
+      // Pass Chrome detection
+      window.chrome = { runtime: {} };
     });
 
     const page = await context.newPage();
