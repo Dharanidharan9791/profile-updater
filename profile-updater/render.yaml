@@ -1,0 +1,14 @@
+services:
+  - type: worker
+    name: naukri-profile-updater
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NAUKRI_EMAIL
+        sync: false
+      - key: NAUKRI_PASSWORD
+        sync: false
+      - key: CRON_SCHEDULE
+        value: "0 10 * * *"
+      - key: HEADLESS
+        value: "true"

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  naukri-updater:
+    build: .
+    container_name: naukri-profile-updater
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./screenshots:/app/screenshots
+    restart: unless-stopped

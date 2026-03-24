@@ -1,0 +1,6 @@
+2026-03-24 22:42:17 [ERROR] ❌ Profile update failed after 26.3s: Could not find save button for headline
+2026-03-24 22:42:17 [ERROR] Could not find save button for headline
+Error: Could not find save button for headline
+    at updateResumeHeadline (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/naukri.js:338:11)
+    at async performUpdate (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/index.js:49:5)
+    at async main (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/index.js:87:5)

@@ -1,0 +1,96 @@
+2026-03-24 22:41:51 [INFO ] 🔧 Naukri Profile Auto-Updater starting...
+2026-03-24 22:41:51 [INFO ]    Mode: Single run
+2026-03-24 22:41:51 [INFO ]    Headless: false
+2026-03-24 22:41:51 [INFO ]    Schedule: 0 10 * * *
+2026-03-24 22:41:51 [INFO ]    Resume upload: No
+2026-03-24 22:41:51 [INFO ] ============================================================
+2026-03-24 22:41:51 [INFO ] 🚀 Starting Naukri profile update...
+2026-03-24 22:41:51 [INFO ] ============================================================
+2026-03-24 22:41:54 [INFO ] Navigating to Naukri login page...
+2026-03-24 22:42:03 [INFO ] Entering credentials...
+2026-03-24 22:42:03 [INFO ] Email filled using selector: input[placeholder*="Email"]
+2026-03-24 22:42:03 [INFO ] Password filled using selector: input[placeholder*="Password"]
+2026-03-24 22:42:03 [INFO ] Login button clicked using selector: button[type="submit"]
+2026-03-24 22:42:03 [INFO ] Waiting for login to complete...
+2026-03-24 22:42:08 [INFO ] ✅ Login successful!
+2026-03-24 22:42:08 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/login-success-2026-03-24T17-12-08-491Z.png
+2026-03-24 22:42:08 [INFO ] Navigating to profile page...
+2026-03-24 22:42:13 [INFO ] Looking for resume headline section...
+2026-03-24 22:42:14 [INFO ] Headline edit clicked using selector: [class*="resumeHeadline"] [class*="edit"]
+2026-03-24 22:42:16 [INFO ] Found headline textarea using selector: textarea
+2026-03-24 22:42:16 [INFO ] Current headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack"
+2026-03-24 22:42:16 [INFO ] New headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack "
+2026-03-24 22:42:17 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/headline-save-fail-2026-03-24T17-12-17-189Z.png
+2026-03-24 22:42:17 [ERROR] ❌ Profile update failed after 26.3s: Could not find save button for headline
+2026-03-24 22:42:17 [ERROR] Could not find save button for headline
+Error: Could not find save button for headline
+    at updateResumeHeadline (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/naukri.js:338:11)
+    at async performUpdate (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/index.js:49:5)
+    at async main (/Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/src/index.js:87:5)
+2026-03-24 22:42:17 [INFO ] Browser closed.
+2026-03-24 22:46:59 [INFO ] 🔧 Naukri Profile Auto-Updater starting...
+2026-03-24 22:46:59 [INFO ]    Mode: Single run
+2026-03-24 22:46:59 [INFO ]    Headless: false
+2026-03-24 22:46:59 [INFO ]    Schedule: 0 10 * * *
+2026-03-24 22:46:59 [INFO ]    Resume upload: No
+2026-03-24 22:46:59 [INFO ] ============================================================
+2026-03-24 22:46:59 [INFO ] 🚀 Starting Naukri profile update...
+2026-03-24 22:46:59 [INFO ] ============================================================
+2026-03-24 22:47:00 [INFO ] Navigating to Naukri login page...
+2026-03-24 22:47:08 [INFO ] Entering credentials...
+2026-03-24 22:47:08 [INFO ] Email filled using selector: input[placeholder*="Email"]
+2026-03-24 22:47:08 [INFO ] Password filled using selector: input[placeholder*="Password"]
+2026-03-24 22:47:08 [INFO ] Login button clicked using selector: button[type="submit"]
+2026-03-24 22:47:08 [INFO ] Waiting for login to complete...
+2026-03-24 22:47:13 [INFO ] ✅ Login successful!
+2026-03-24 22:47:13 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/login-success-2026-03-24T17-17-13-652Z.png
+2026-03-24 22:47:13 [INFO ] Navigating to profile page...
+2026-03-24 22:47:19 [INFO ] Looking for resume headline section...
+2026-03-24 22:47:19 [INFO ] Headline edit clicked using selector: [class*="resumeHeadline"] [class*="edit"]
+2026-03-24 22:47:21 [INFO ] Found headline textarea using selector: textarea
+2026-03-24 22:47:21 [INFO ] Current headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack"
+2026-03-24 22:47:21 [INFO ] New headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack "
+2026-03-24 22:47:23 [INFO ] Save clicked via getByRole
+2026-03-24 22:47:26 [INFO ] ✅ Resume headline updated successfully!
+2026-03-24 22:47:26 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/headline-updated-2026-03-24T17-17-26-396Z.png
+2026-03-24 22:47:26 [INFO ] ============================================================
+2026-03-24 22:47:26 [INFO ] ✅ Profile update completed successfully in 27.1s
+2026-03-24 22:47:26 [INFO ] ============================================================
+2026-03-24 22:47:26 [INFO ] Browser closed.
+2026-03-24 22:50:24 [INFO ] 🔧 Naukri Profile Auto-Updater starting...
+2026-03-24 22:50:24 [INFO ]    Mode: Single run
+2026-03-24 22:50:24 [INFO ]    Headless: false
+2026-03-24 22:50:24 [INFO ]    Schedule: 0 10 * * *
+2026-03-24 22:50:24 [INFO ]    Resume upload: No
+2026-03-24 22:50:24 [INFO ] ============================================================
+2026-03-24 22:50:24 [INFO ] 🚀 Starting Naukri profile update...
+2026-03-24 22:50:24 [INFO ] ============================================================
+2026-03-24 22:50:25 [INFO ] Navigating to Naukri login page...
+2026-03-24 22:50:33 [INFO ] Entering credentials...
+2026-03-24 22:50:33 [INFO ] Email filled using selector: input[placeholder*="Email"]
+2026-03-24 22:50:33 [INFO ] Password filled using selector: input[placeholder*="Password"]
+2026-03-24 22:50:33 [INFO ] Login button clicked using selector: button[type="submit"]
+2026-03-24 22:50:33 [INFO ] Waiting for login to complete...
+2026-03-24 22:50:38 [INFO ] ✅ Login successful!
+2026-03-24 22:50:38 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/login-success-2026-03-24T17-20-38-259Z.png
+2026-03-24 22:50:38 [INFO ] Navigating to profile page...
+2026-03-24 22:50:43 [INFO ] ── Pass 1: Adding trailing space ──
+2026-03-24 22:50:44 [INFO ] Headline edit clicked using selector: [class*="resumeHeadline"] [class*="edit"]
+2026-03-24 22:50:46 [INFO ] Found headline textarea using selector: textarea
+2026-03-24 22:50:46 [INFO ] Original headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack"
+2026-03-24 22:50:46 [INFO ] Updated headline (with space): "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack "
+2026-03-24 22:50:48 [INFO ] Save clicked via getByRole
+2026-03-24 22:50:52 [INFO ] ✅ Pass 1 saved (space added)
+2026-03-24 22:50:52 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/headline-pass1-saved-2026-03-24T17-20-52-177Z.png
+2026-03-24 22:50:52 [INFO ] ── Pass 2: Removing trailing space ──
+2026-03-24 22:50:52 [INFO ] Headline edit clicked using selector: [class*="resumeHeadline"] [class*="edit"]
+2026-03-24 22:50:54 [INFO ] Found headline textarea using selector: textarea
+2026-03-24 22:50:54 [INFO ] Restored headline: "Senior Software Engineer @ Aspire Systems | Client Project: Samsung (Onsite) | 3.8 YOE | React.js, Node.js, Azure, Microservices, MERN, Full Stack"
+2026-03-24 22:50:56 [INFO ] Save clicked via getByRole
+2026-03-24 22:51:00 [INFO ] ✅ Pass 2 saved (space removed)
+2026-03-24 22:51:00 [INFO ] Screenshot saved: /Users/D2C-dharani-k/.gemini/antigravity/playground/azure-apollo/screenshots/headline-pass2-saved-2026-03-24T17-21-00-582Z.png
+2026-03-24 22:51:00 [INFO ] ✅ Resume headline double-toggle complete! Headline restored to original.
+2026-03-24 22:51:00 [INFO ] ============================================================
+2026-03-24 22:51:00 [INFO ] ✅ Profile update completed successfully in 36.7s
+2026-03-24 22:51:00 [INFO ] ============================================================
+2026-03-24 22:51:00 [INFO ] Browser closed.

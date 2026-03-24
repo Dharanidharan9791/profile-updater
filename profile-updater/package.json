@@ -1,0 +1,19 @@
+{
+  "name": "naukri-profile-updater",
+  "version": "1.0.0",
+  "description": "Automated Naukri.com profile updater that refreshes your profile daily",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
+    "update:now": "NAUKRI_RUN_ONCE=true node src/index.js"
+  },
+  "keywords": ["naukri", "automation", "profile-updater", "cron"],
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-cron": "^3.0.3",
+    "playwright": "^1.49.1",
+    "winston": "^3.17.0"
+  }
+}
