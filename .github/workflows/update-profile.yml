@@ -1,8 +1,10 @@
 name: Naukri Profile Updater
 
 on:
+  # Run daily at 4:30 AM UTC = 10:00 AM IST
   schedule:
     - cron: '30 4 * * *'
+  # Allow manual trigger from GitHub UI
   workflow_dispatch:
 
 jobs:
@@ -32,10 +34,10 @@ jobs:
           HEADLESS: 'true'
         run: node src/index.js
 
-      - name: Upload failure screenshots
-        if: failure()
+      - name: Upload screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: failure-screenshots
+          name: debug-screenshots
           path: screenshots/
           retention-days: 7
