@@ -1,8 +1,7 @@
-const { chromium } = require('playwright');
 const cron = require('node-cron');
 const { config, validate } = require('./config');
 const logger = require('./logger');
-const { login, updateResumeHeadline, uploadResume } = require('./naukri');
+const { login, updateResumeHeadline } = require('./naukri');
 
 /**
  * Perform the full profile update flow
@@ -13,65 +12,12 @@ async function performUpdate() {
   logger.info('🚀 Starting Naukri profile update...');
   logger.info('='.repeat(60));
 
-  let browser = null;
-
   try {
-    // Launch browser with stealth args to avoid bot detection
-    browser = await chromium.launch({
-      headless: config.browser.headless,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-blink-features=AutomationControlled',
-        '--window-size=1366,768',
-      ],
-    });
+    // Step 1: Login and get session cookies
+    const cookies = await login(config.naukri.email, config.naukri.password);
 
-    const context = await browser.newContext({
-      viewport: { width: 1366, height: 768 },
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      locale: 'en-IN',
-      timezoneId: 'Asia/Kolkata',
-      javaScriptEnabled: true,
-    });
-
-    // Inject stealth scripts to hide automation signals
-    await context.addInitScript(() => {
-      // Hide webdriver flag
-      Object.defineProperty(navigator, 'webdriver', { get: () => false });
-
-      // Override plugins to look real
-      Object.defineProperty(navigator, 'plugins', {
-        get: () => [1, 2, 3, 4, 5],
-      });
-
-      // Override languages
-      Object.defineProperty(navigator, 'languages', {
-        get: () => ['en-US', 'en', 'hi'],
-      });
-
-      // Pass Chrome detection
-      window.chrome = { runtime: {} };
-    });
-
-    const page = await context.newPage();
-
-    // Set default timeouts
-    page.setDefaultTimeout(30000);
-    page.setDefaultNavigationTimeout(60000);
-
-    // Step 1: Login
-    await login(page, config.naukri.email, config.naukri.password);
-
-    // Step 2: Update resume headline
-    await updateResumeHeadline(page);
-
-    // Step 3: Upload resume (optional)
-    if (config.resume.path) {
-      await uploadResume(page, config.resume.path);
-    }
+    // Step 2: Update resume headline (double-toggle)
+    await updateResumeHeadline(cookies, config.naukri.headline);
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     logger.info('='.repeat(60));
@@ -81,11 +27,6 @@ async function performUpdate() {
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     logger.error(`❌ Profile update failed after ${elapsed}s: ${error.message}`);
     logger.error(error);
-  } finally {
-    if (browser) {
-      await browser.close();
-      logger.info('Browser closed.');
-    }
   }
 }
 
@@ -95,9 +36,7 @@ async function performUpdate() {
 async function main() {
   logger.info('🔧 Naukri Profile Auto-Updater starting...');
   logger.info(`   Mode: ${config.runOnce ? 'Single run' : 'Cron scheduled'}`);
-  logger.info(`   Headless: ${config.browser.headless}`);
   logger.info(`   Schedule: ${config.cron.schedule}`);
-  logger.info(`   Resume upload: ${config.resume.path ? 'Yes' : 'No'}`);
 
   // Validate config
   validate();
