@@ -142,7 +142,7 @@ async function updateResumeHeadline(cookies, headline) {
 
   // Pass 2: Remove trailing space (restore original)
   logger.info('── Pass 2: Restoring original ──');
-  await postHeadlineUpdate(cookies, cleanHeadline);
+  await postHeadlineUpdate(cookies, cleanHeadline + 'hi');
   logger.info('✅ Pass 2 done');
 
   logger.info('✅ Profile refreshed! Headline restored to original.');
