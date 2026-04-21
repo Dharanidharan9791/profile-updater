@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const path = require('path');
 
 dotenv.config();
 
@@ -7,17 +6,10 @@ const config = {
   naukri: {
     email: process.env.NAUKRI_EMAIL,
     password: process.env.NAUKRI_PASSWORD,
+    headline: process.env.NAUKRI_HEADLINE,
   },
   cron: {
     schedule: process.env.CRON_SCHEDULE || '0 10 * * *', // Default: 10 AM daily
-  },
-  resume: {
-    path: process.env.RESUME_PATH
-      ? path.resolve(process.env.RESUME_PATH)
-      : null,
-  },
-  browser: {
-    headless: process.env.HEADLESS !== 'false', // Default: true
   },
   runOnce: process.env.NAUKRI_RUN_ONCE === 'true',
 };
